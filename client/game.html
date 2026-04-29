@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>BJPoker — Table</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body class="min-h-screen bg-emerald-900 text-white">
+    <header class="border-b border-emerald-950 px-6 py-3 flex items-center justify-between bg-emerald-950/40">
+      <a href="/" class="text-lg font-semibold tracking-wide">← BJPoker</a>
+      <div class="flex items-center gap-4 text-sm">
+        <span id="table-name" class="text-emerald-200 font-medium"></span>
+        <span id="phase-badge" class="px-2 py-0.5 rounded bg-emerald-700/70 text-emerald-100 text-xs uppercase tracking-wider"></span>
+        <span id="bank" class="px-2 py-1 rounded bg-emerald-950/60 text-emerald-300 font-mono text-sm"></span>
+        <button id="leave-btn" class="px-3 py-1.5 rounded bg-red-600 hover:bg-red-500 text-white text-sm">Leave</button>
+      </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-6 py-2 space-y-2">
+      <!-- Dealer -->
+      <section class="flex flex-col items-center gap-2">
+        <div id="board-label" class="text-emerald-200 text-xs uppercase tracking-widest">Dealer</div>
+        <div id="dealer-cards" class="flex gap-2 min-h-[90px]"></div>
+        <div id="dealer-score" class="text-emerald-100 font-semibold"></div>
+      </section>
+
+      <!-- Other players, arranged in fixed positions around the table -->
+      <section id="other-seats" class="relative h-56 sm:h-64"></section>
+
+      <!-- Result banner (only shown to you) -->
+      <div id="result-banner" class="hidden text-center"></div>
+
+      <!-- Your big seat at the bottom-center -->
+      <section id="my-seat" class="flex justify-center"></section>
+
+      <!-- Action panel -->
+      <section id="actions" class="bg-emerald-950/50 rounded-xl p-4 min-h-[80px] flex items-center justify-center"></section>
+    </main>
+
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+    <script src="/js/game.js" type="module"></script>
+  </body>
+</html>

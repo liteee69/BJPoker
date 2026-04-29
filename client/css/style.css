@@ -1,0 +1,241 @@
+/* Card faces — bold suit center, rank top-left + bottom-right (rotated). */
+.card {
+  width: 64px;
+  height: 90px;
+  background: white;
+  border-radius: 6px;
+  border: 1px solid #d0d0d0;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #111;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  flex-shrink: 0;
+}
+.card.red { color: #c0392b; }
+.card .rank-tl, .card .rank-br {
+  position: absolute;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 1;
+}
+.card .rank-tl { top: 5px; left: 6px; }
+.card .rank-br { bottom: 5px; right: 6px; transform: rotate(180deg); }
+.card .suit { font-size: 36px; line-height: 1; }
+.card.hidden {
+  background: repeating-linear-gradient(
+    45deg, #b91c1c, #b91c1c 6px, #7f1d1d 6px, #7f1d1d 12px
+  );
+  border-color: #7f1d1d;
+}
+.card.hidden .rank-tl, .card.hidden .rank-br, .card.hidden .suit { display: none; }
+
+/* Mini cards used for non-self seats */
+.card.card-mini { width: 38px; height: 54px; }
+.card.card-mini .suit { font-size: 22px; }
+.card.card-mini .rank-tl { top: 3px; left: 4px; font-size: 10px; }
+.card.card-mini .rank-br { display: none; }
+
+/* Subtle pulse on the active seat */
+@keyframes seat-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(250, 204, 21, 0.5); }
+  50% { box-shadow: 0 0 0 6px rgba(250, 204, 21, 0); }
+}
+.seat-active { animation: seat-pulse 1.6s infinite; }
+
+/* ====================== Card-table polish (shared by Poker + Blackjack) ====================== */
+
+/* Felt-style table area inside the dealer slot */
+.felt-area {
+  background: radial-gradient(ellipse at center, #1f7a45 0%, #0e3d20 75%);
+  border: 5px solid #5a3a1a;
+  border-radius: 9999px;
+  padding: 22px 48px 20px;
+  box-shadow: inset 0 0 30px rgba(0,0,0,0.45), 0 6px 20px rgba(0,0,0,0.4);
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Pot display with chip icon */
+.poker-pot {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 800;
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
+  font-size: 22px;
+  letter-spacing: 0.5px;
+}
+.poker-pot-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #ffffff 0%, #d6d6d6 30%, #6d6d6d 100%);
+  border: 3px dashed #444;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+  position: relative;
+}
+.poker-pot-icon::before,
+.poker-pot-icon::after {
+  content: '';
+  position: absolute;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #ffffff 0%, #d6d6d6 30%, #6d6d6d 100%);
+  border: 3px dashed #444;
+}
+.poker-pot-icon::before { top: -6px; left: 0; }
+.poker-pot-icon::after { top: -12px; left: 0; }
+
+/* Red ribbon name banner */
+.name-banner {
+  background: linear-gradient(180deg, #b53030 0%, #7d1d1d 100%);
+  color: white;
+  font-weight: 700;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+  padding: 4px 14px;
+  text-align: center;
+  position: relative;
+  border: 1px solid #5a1010;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+}
+.name-banner-small { font-size: 12px; min-width: 88px; }
+.name-banner-big { font-size: 16px; min-width: 130px; padding: 6px 18px; }
+
+/* Silver/gold balance banner */
+.balance-banner {
+  background: linear-gradient(180deg, #f0d27a 0%, #b8893a 100%);
+  color: #2c1d05;
+  font-weight: 800;
+  padding: 2px 12px;
+  text-align: center;
+  font-size: 12px;
+  border: 1px solid #8a6520;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.4);
+}
+.balance-banner-big { font-size: 14px; padding: 3px 16px; }
+
+/* Dealer "D" pip */
+.dealer-pip {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #ffe275 0%, #c79b3a 100%);
+  border: 2px solid #f1c232;
+  color: #5b3a00;
+  font-weight: 900;
+  font-size: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+  margin-left: 4px;
+}
+
+/* Action speech bubble */
+.action-bubble {
+  background: white;
+  color: #222;
+  padding: 4px 14px;
+  border-radius: 14px;
+  font-size: 12px;
+  font-weight: 700;
+  position: relative;
+  display: inline-block;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+  margin-top: 8px;
+}
+.action-bubble::after {
+  content: '';
+  position: absolute;
+  top: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-bottom: 6px solid white;
+}
+.action-bubble.fold { color: #b91c1c; }
+.action-bubble.allin { color: #c026d3; }
+.action-bubble.raise { color: #b45309; }
+
+/* Bet chip stack — small rendered chip column */
+.chip-stack { display: inline-flex; flex-direction: column-reverse; align-items: center; }
+.chip {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px dashed rgba(255,255,255,0.6);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.5);
+  margin-top: -10px;
+}
+.chip:first-child { margin-top: 0; }
+.chip-red { background: radial-gradient(circle at 30% 30%, #ff6b6b, #b91c1c); }
+.chip-blue { background: radial-gradient(circle at 30% 30%, #69b4ff, #1d4ed8); }
+.chip-yellow { background: radial-gradient(circle at 30% 30%, #ffe666, #b8893a); }
+.chip-green { background: radial-gradient(circle at 30% 30%, #69e08c, #15803d); }
+.chip-black { background: radial-gradient(circle at 30% 30%, #555, #111); }
+
+/* Soft yellow glow under the active seat */
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 14px 3px rgba(250, 204, 21, 0.45); }
+  50%      { box-shadow: 0 0 26px 8px rgba(250, 204, 21, 0.85); }
+}
+.poker-active { animation: glow-pulse 1.5s infinite; }
+
+/* Round table backdrop for the opponent arc */
+.poker-mode #other-seats,
+.blackjack-mode #other-seats {
+  background: radial-gradient(ellipse at center, rgba(31,122,69,0.4) 0%, rgba(0,0,0,0) 70%);
+}
+
+/* Hide the redundant "Dealer" label above the felt — replaced by the felt itself */
+.poker-mode #board-label,
+.blackjack-mode #board-label { display: none; }
+.poker-mode #dealer-score,
+.blackjack-mode #dealer-score { display: none; }
+
+/* Score badge for blackjack seats — black-on-yellow pill */
+.score-banner {
+  background: linear-gradient(180deg, #facc15 0%, #ca8a04 100%);
+  color: #1c1300;
+  font-weight: 800;
+  font-size: 11px;
+  padding: 2px 10px;
+  border-radius: 9999px;
+  border: 1px solid #854d0e;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.4);
+  text-shadow: none;
+  letter-spacing: 0.3px;
+}
+.score-banner-big { font-size: 13px; padding: 3px 14px; }
+.score-banner.bust { background: linear-gradient(180deg, #ef4444 0%, #7f1d1d 100%); color: #fff; border-color: #7f1d1d; }
+.score-banner.bj   { background: linear-gradient(180deg, #fde047 0%, #b45309 100%); color: #3a2700; border-color: #7c2d12; }
+
+/* Solid black action buttons matching the screenshot */
+.poker-action-btn {
+  background: linear-gradient(180deg, #2a2a2a, #0a0a0a);
+  color: white;
+  font-weight: 800;
+  font-size: 18px;
+  padding: 12px 32px;
+  border: 1px solid #3a3a3a;
+  border-radius: 6px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.5);
+  cursor: pointer;
+  transition: transform 0.05s;
+  letter-spacing: 0.4px;
+}
+.poker-action-btn:hover:not(:disabled) { background: linear-gradient(180deg, #3a3a3a, #1a1a1a); transform: translateY(-1px); }
+.poker-action-btn:active:not(:disabled) { transform: translateY(1px); }
+.poker-action-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+.poker-action-btn.fold { background: linear-gradient(180deg, #6b1d1d, #3a0e0e); border-color: #8b1010; }
+.poker-action-btn.allin { background: linear-gradient(180deg, #a82c8e, #5a134d); border-color: #d048b5; }
