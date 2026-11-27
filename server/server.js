@@ -5,6 +5,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { Server as SocketIOServer } from 'socket.io';
 import cookieParser from 'cookie-parser';
+import mongoose from 'mongoose';
 import { connectDB } from './db.js';
 import authRoutes from './routes/auth.js';
 import { socketAuth } from './sockets/auth.js';
@@ -27,6 +28,18 @@ app.use(express.static(path.join(__dirname, '..', 'client')));
 app.get('/health', (_req, res) => res.json({ ok: true }));
 app.use('/api/auth', authRoutes);
 
+// Catch errors from route handlers so one failed request does not stop the server.
+app.use((err, _req, res, _next) => {
+  if (err.status >= 400 && err.status < 500) {
+    return res.status(err.status).json({ error: err.expose ? err.message : 'Bad request' });
+  }
+  console.error(err);
+  if (mongoose.connection.readyState !== 1) {
+    return res.status(503).json({ error: 'Database unavailable' });
+  }
+  res.status(500).json({ error: 'Server error' });
+});
+
 io.use(socketAuth);
 io.on('connection', (socket) => {
   console.log(`socket connected: ${socket.id} (user=${socket.data.username})`);
@@ -37,6 +50,10 @@ io.on('connection', (socket) => {
 });
 
 async function start() {
+  if (!process.env.JWT_SECRET) {
+    console.error('JWT_SECRET is not set. Copy .env.example to .env and set it.');
+    process.exit(1);
+  }
   if (MONGO_URI) {
     try {
       await connectDB(MONGO_URI);

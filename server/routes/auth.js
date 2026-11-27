@@ -9,7 +9,11 @@ import {
 
 const router = express.Router();
 
-router.post('/register', async (req, res) => {
+// Express 4 does not catch rejected promises from async handlers.
+// Pass them to the error handler so a DB failure returns an error instead of crashing.
+const wrap = (fn) => (req, res, next) => fn(req, res, next).catch(next);
+
+router.post('/register', wrap(async (req, res) => {
   const { username, password } = req.body || {};
   if (!username || !password) {
     return res.status(400).json({ error: 'Username and password required' });
@@ -26,9 +30,9 @@ router.post('/register', async (req, res) => {
   const token = signToken(user._id.toString());
   setAuthCookie(res, token);
   res.json({ user: user.toPublicJSON() });
-});
+}));
 
-router.post('/login', async (req, res) => {
+router.post('/login', wrap(async (req, res) => {
   const { username, password } = req.body || {};
   if (!username || !password) {
     return res.status(400).json({ error: 'Username and password required' });
@@ -40,7 +44,7 @@ router.post('/login', async (req, res) => {
   const token = signToken(user._id.toString());
   setAuthCookie(res, token);
   res.json({ user: user.toPublicJSON() });
-});
+}));
 
 router.post('/logout', (_req, res) => {
   clearAuthCookie(res);

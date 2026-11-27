@@ -38,10 +38,14 @@ export async function requireAuth(req, res, next) {
   const token = readTokenFromCookie(req.cookies);
   const payload = token ? verifyToken(token) : null;
   if (!payload) return res.status(401).json({ error: 'Not authenticated' });
-  const user = await User.findById(payload.sub);
-  if (!user) return res.status(401).json({ error: 'User not found' });
-  req.user = user;
-  next();
+  try {
+    const user = await User.findById(payload.sub);
+    if (!user) return res.status(401).json({ error: 'User not found' });
+    req.user = user;
+    next();
+  } catch (err) {
+    next(err);
+  }
 }
 
 export { COOKIE_NAME };
